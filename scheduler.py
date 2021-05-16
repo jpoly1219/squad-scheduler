@@ -2,10 +2,10 @@ import random
 
 
 calendar = [
-    ["빵빵빵", "빵빵빵", "빵빵빵", "빵빵빵", "빵빵빵", "빵빵빵", "빵빵빵"],
-    ["빵빵빵", "빵빵빵", "빵빵빵", "빵빵빵", "빵빵빵", "빵빵빵", "빵빵빵"],
-    ["빵빵빵", "빵빵빵", "빵빵빵", "빵빵빵", "빵빵빵", "빵빵빵", "빵빵빵"],
-    ["빵빵빵", "빵빵빵", "빵빵빵", "빵빵빵", "빵빵빵", "빵빵빵", "빵빵빵"]
+    ["ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ"],
+    ["ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ"],
+    ["ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ"],
+    ["ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ"]
 ]
 
 sundayNight = input("Who was the night shift for Sunday? ")
@@ -27,7 +27,7 @@ class Person:
             self.logicalCalendar[3][0] = 1
         for i in range(0, 4):
             for j in range(0, 7):
-                if calendar[i][j] != "빵빵빵":
+                if calendar[i][j] != "ㅡㅡㅡ":
                     self.logicalCalendar[i][j] = 1
     
     def assign(self):
@@ -84,14 +84,14 @@ class Person:
 
 def shiftChecker(personList):
     print("checking shifts...")
-    # if a person's logicalCalendar value == 0 and calendar value == 빵빵빵
+    # if a person's logicalCalendar value == 0 and calendar value == ㅡㅡㅡ
     # then assign that person there
     random.shuffle(personList)
     for person in personList:
         done = False
         for i in range(0, 4):
             for j in range(0, 7):
-                if person.logicalCalendar[i][j] == 0 and calendar[i][j] == "빵빵빵":
+                if person.logicalCalendar[i][j] == 0 and calendar[i][j] == "ㅡㅡㅡ":
                     calendar[i][j] = person.name
                     done = True
                     break
