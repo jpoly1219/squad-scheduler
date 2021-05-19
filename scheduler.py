@@ -1,4 +1,4 @@
-import random
+import math, random
 
 
 calendar = [
@@ -152,61 +152,31 @@ def fillBlank(personList):
                         continue
 
 
-logCalMingeunkim = [
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0]
-]
-logCalYongheekwon = [
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0]
-]
-logCalJunghoonban = [
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0]
-]
-logCalJunehyungkim = [
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0]
-]
-logCalWootaekhong = [
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0]
-]
-mingeunkim = Person(personNameList[0], logCalMingeunkim, 0, 0, 0, 0, 0, 0)
-yongheekwon = Person(personNameList[1], logCalYongheekwon, 0, 0, 0, 0, 0, 0)
-junghoonban = Person(personNameList[2], logCalJunghoonban, 0, 0, 0, 0, 0, 0)
-junehyungkim = Person(personNameList[3], logCalJunehyungkim, 0, 0, 0, 0, 0, 0)
-wootaekhong = Person(personNameList[4], logCalWootaekhong, 0, 0, 0, 0, 0, 0)
+personDict = {}
 
-personList = [mingeunkim, yongheekwon, junghoonban, junehyungkim, wootaekhong]
+for i, person in enumerate(personNameList):
+    personDict["person{0}".format(i)] = Person(
+        personNameList[i],
+        [
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0]
+        ],
+        0, 0, 0, 0, 0, 0
+    )
 
-for i in range(0, 5):
-    for person in personList:
+for i in range(0, math.floor(28 / len(personNameList))):
+    for person in personDict.values():
         person.logCalInit()
         person.assign()
-"""
-print("pre-check:")
 
-for i in range(0, 4):
-    print(calendar[i])
-"""
-
-fillBlank(personList)
+fillBlank(list(personDict.values()))
 
 print("final:")
 for i in range(0, 4):
     print(calendar[i])
-for person in personList:
+for person in personDict.values():
     person.calcTime()
     print(person.name + ": hours worked = " + str(person.hoursWorked) + ", lost free time = " + str(person.lostTime))
 
@@ -214,5 +184,5 @@ for person in personList:
 # future feature: powershell checks if scheduler.py returns a valid schedule, and reloads it if it doesn't
 for i in range(0, 4):
     if "ㅡㅡㅡ" in calendar[i]:
-        print("blank")
+        print("empty cells detected")
         break
