@@ -8,6 +8,17 @@ calendar = [
     ["ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ"]
 ]
 
+
+def addPerson(pathToFile):
+    personFile = open(pathToFile, "r")
+    personNameList = personFile.read().splitlines()
+    return personNameList
+    personFile.close()
+    
+
+
+personNameList = addPerson("./people.txt")
+print(personNameList)
 sundayNight = input("Who was the night shift for Sunday? ")
 
 class Person:
@@ -140,7 +151,6 @@ def fillBlank(personList):
                         # print("logCal of "+person.name+" has no space")
                         continue
 
-                    
 
 logCalMingeunkim = [
     [0, 0, 0, 0, 0, 0, 0],
@@ -172,11 +182,11 @@ logCalWootaekhong = [
     [0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0]
 ]
-mingeunkim = Person("김민근", logCalMingeunkim, 0, 0, 0, 0, 0, 0)
-yongheekwon = Person("권용희", logCalYongheekwon, 0, 0, 0, 0, 0, 0)
-junghoonban = Person("반정훈", logCalJunghoonban, 0, 0, 0, 0, 0, 0)
-junehyungkim = Person("김준형", logCalJunehyungkim, 0, 0, 0, 0, 0, 0)
-wootaekhong = Person("홍우택", logCalWootaekhong, 0, 0, 0, 0, 0, 0)
+mingeunkim = Person(personNameList[0], logCalMingeunkim, 0, 0, 0, 0, 0, 0)
+yongheekwon = Person(personNameList[1], logCalYongheekwon, 0, 0, 0, 0, 0, 0)
+junghoonban = Person(personNameList[2], logCalJunghoonban, 0, 0, 0, 0, 0, 0)
+junehyungkim = Person(personNameList[3], logCalJunehyungkim, 0, 0, 0, 0, 0, 0)
+wootaekhong = Person(personNameList[4], logCalWootaekhong, 0, 0, 0, 0, 0, 0)
 
 personList = [mingeunkim, yongheekwon, junghoonban, junehyungkim, wootaekhong]
 
