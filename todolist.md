@@ -1,8 +1,6 @@
-## Feature Requests and Issues
+# Feature Requests and Issues
 
-# Feature Requests
-
-- Dynamically add people via an external text file. (IN PROGRESS)
+## Feature Requests
 
 - Run the program until it generates 5 candidates for the schedule.
 
@@ -14,7 +12,9 @@
 
 - Format the output better. (DONE)
 
-# Issues
+- Dynamically add people via an external text file. (DONE)
+
+## Issues
 
 - Some runs don't yield a result.
   - Due to the random nature of the assigning process, this could happen if all the logical arrays are full.
