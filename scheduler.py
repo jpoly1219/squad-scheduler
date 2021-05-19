@@ -11,10 +11,11 @@ calendar = [
 sundayNight = input("Who was the night shift for Sunday? ")
 
 class Person:
-    def __init__(self, name, logicalCalendar, hoursWorked, numMorning, numAfternoon, numEvening, numNight):
+    def __init__(self, name, logicalCalendar, hoursWorked, lostTime, numMorning, numAfternoon, numEvening, numNight):
         self.name = name
         self.logicalCalendar = logicalCalendar
         self.hoursWorked = hoursWorked
+        self.lostTime = lostTime
         self.numMorning = numMorning
         self.numAfternoon = numAfternoon
         self.numEvening = numEvening
@@ -88,6 +89,22 @@ class Person:
             self.logicalCalendar[timeslot][day] = 1 # the shift
             calendar[timeslot][day] = self.name
             self.logicalCalendar[timeslot-1][day] = 1 # evening shift
+    
+
+    def calcTime(self):
+        morningTime = 4 * self.numMorning
+        afternoonTime = 6 * self.numAfternoon
+        eveningTime = 5 * self.numEvening
+        nightTime = 9 * self.numNight
+        self.hoursWorked = morningTime + afternoonTime + eveningTime + nightTime
+        
+        for i in range(5, 7):
+            if calendar[0][i] == self.name:
+                self.lostTime += 4
+            if calendar[1][i] == self.name:
+                self.lostTime += 6
+            if calendar[2][i] == self.name:
+                self.lostTime += 5
 
 
 def fillBlank(personList):
@@ -99,7 +116,7 @@ def fillBlank(personList):
         for j in range(0, 7):
             if calendar[i][j] == "ㅡㅡㅡ":
                 for person in personList:
-                    print("checking case for " + person.name + " at "+ str(i) + ", " + str(j))
+                    # print("checking case for " + person.name + " at "+ str(i) + ", " + str(j))
                     if person.logicalCalendar[i][j] == 0:
                         if i == 0 and person.numMorning < 2:
                             calendar[i][j] = person.name
@@ -117,10 +134,10 @@ def fillBlank(personList):
                             calendar[i][j] = person.name
                             person.numNight += 1
                             break
-                        print(person.name+" already has too many shifts for that timeslot")
+                        # print(person.name+" already has too many shifts for that timeslot")
                         continue
                     else:
-                        print("logCal of "+person.name+" has no space")
+                        # print("logCal of "+person.name+" has no space")
                         continue
 
                     
@@ -155,11 +172,11 @@ logCalWootaekhong = [
     [0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0]
 ]
-mingeunkim = Person("김민근", logCalMingeunkim, 0, 0, 0, 0, 0)
-yongheekwon = Person("권용희", logCalYongheekwon, 0, 0, 0, 0, 0)
-junghoonban = Person("반정훈", logCalJunghoonban, 0, 0, 0, 0, 0)
-junehyungkim = Person("김준형", logCalJunehyungkim, 0, 0, 0, 0, 0)
-wootaekhong = Person("홍우택", logCalWootaekhong, 0, 0, 0, 0, 0)
+mingeunkim = Person("김민근", logCalMingeunkim, 0, 0, 0, 0, 0, 0)
+yongheekwon = Person("권용희", logCalYongheekwon, 0, 0, 0, 0, 0, 0)
+junghoonban = Person("반정훈", logCalJunghoonban, 0, 0, 0, 0, 0, 0)
+junehyungkim = Person("김준형", logCalJunehyungkim, 0, 0, 0, 0, 0, 0)
+wootaekhong = Person("홍우택", logCalWootaekhong, 0, 0, 0, 0, 0, 0)
 
 personList = [mingeunkim, yongheekwon, junghoonban, junehyungkim, wootaekhong]
 
@@ -167,23 +184,25 @@ for i in range(0, 5):
     for person in personList:
         person.logCalInit()
         person.assign()
-
+"""
 print("pre-check:")
 
 for i in range(0, 4):
     print(calendar[i])
-
-
-# run fillBlank until no more ㅡㅡㅡ exists
 """
-for i in range(0, 4):
-    print(i)
-    while "ㅡㅡㅡ" in calendar[i]:
-        fillBlank(personList)
-        print("blank "+str(i)+" filled")
-"""
+
 fillBlank(personList)
 
 print("final:")
 for i in range(0, 4):
     print(calendar[i])
+for person in personList:
+    person.calcTime()
+    print(person.name + ": hours worked = " + str(person.hoursWorked) + ", lost free time = " + str(person.lostTime))
+
+# this bit is for a powershell script to read and reload program if it reads blank
+# future feature: powershell checks if scheduler.py returns a valid schedule, and reloads it if it doesn't
+for i in range(0, 4):
+    if "ㅡㅡㅡ" in calendar[i]:
+        print("blank")
+        break
