@@ -1,4 +1,4 @@
-import math, random
+import math, openpyxl, random
 
 
 calendar = [
@@ -7,6 +7,15 @@ calendar = [
     ["ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ"],
     ["ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ"]
 ]
+
+wb = openpyxl.load_workbook("geunmyeong.xlsx")
+sheet1 = wb.get_sheet_by_name("Sheet1")
+empytyCellCount = 28
+for i in range(0, 4):
+    for j in range(0, 7):
+        if sheet1.cell(row=i+1, column=j+1).value != None:
+            empytyCellCount -= 1
+            calendar[i][j] == sheet1.cell(row=i+1, column=j+1).value
 
 
 def addPerson(pathToFile):
@@ -166,12 +175,18 @@ for i, person in enumerate(personNameList):
         0, 0, 0, 0, 0, 0
     )
 
-for i in range(0, math.floor(28 / len(personNameList))):
+for i in range(0, math.floor(empytyCellCount / len(personNameList))):
     for person in personDict.values():
         person.logCalInit()
         person.assign()
 
 fillBlank(list(personDict.values()))
+
+# write final results into the Excel sheet
+for i in range(0, 4):
+    for j in range(0, 7):
+        sheet1.cell(row=i+8, column=j+1) == calendar[i][j]
+
 
 print("final:")
 for i in range(0, 4):

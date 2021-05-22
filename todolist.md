@@ -5,6 +5,10 @@
 - Run the program until it generates 5 candidates for the schedule.
 
 - Fix a person to certain timeslots and run the program.
+  - The UI will be a bit cumbersome in CLI, so I think the best way to do this is to create a separate Excel spreadsheet.
+  - Sheet1 will hold the pre-assigned schedule, and Sheet2 will hold the 5 candidates for the finalized schedule.
+  - Read from Sheet1 > calculate positions > output five different schedules into Sheet2
+  - This may need an overhaul of some functions as the desired workflow of the users isn't a CLI-based one.
 
 - Automatically save the end results to an Excel spreadsheet.
 
