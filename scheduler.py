@@ -11,11 +11,14 @@ calendar = [
 wb = openpyxl.load_workbook("geunmyeong.xlsx")
 sheet1 = wb.get_sheet_by_name("Sheet1")
 empytyCellCount = 28
+
 for i in range(0, 4):
     for j in range(0, 7):
         if sheet1.cell(row=i+1, column=j+1).value != None:
             empytyCellCount -= 1
             calendar[i][j] == sheet1.cell(row=i+1, column=j+1).value
+
+sundayNight = sheet1["I3"].value
 
 
 def addPerson(pathToFile):
@@ -25,10 +28,9 @@ def addPerson(pathToFile):
     personFile.close()
     
 
-
 personNameList = addPerson("./people.txt")
 print(personNameList)
-sundayNight = input("Who was the night shift for Sunday? ")
+
 
 class Person:
     def __init__(self, name, logicalCalendar, hoursWorked, lostTime, numMorning, numAfternoon, numEvening, numNight):
@@ -194,10 +196,3 @@ for i in range(0, 4):
 for person in personDict.values():
     person.calcTime()
     print(person.name + ": hours worked = " + str(person.hoursWorked) + ", lost free time = " + str(person.lostTime))
-
-# this bit is for a powershell script to read and reload program if it reads blank
-# future feature: powershell checks if scheduler.py returns a valid schedule, and reloads it if it doesn't
-for i in range(0, 4):
-    if "ㅡㅡㅡ" in calendar[i]:
-        print("empty cells detected")
-        break
