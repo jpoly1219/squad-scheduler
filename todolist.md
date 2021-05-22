@@ -3,6 +3,11 @@
 ## Feature Requests
 
 - Run the program until it generates 5 candidates for the schedule.
+  - Would be a bit tricky to implement. The program sometimes doesn't run because of its random nature, and  
+  then it would be the halting problem, which is impossible to solve.
+  - I could implement a timer that counts 0.5 seconds or so and re-run the program if results are not given.
+  - I need to re-write the code so that there is a sort of a "main" function that runs the program once,  
+  which can be then looped over as needed.
 
 - Fix a person to certain timeslots and run the program. (IN PROGRESS)
   - The UI will be a bit cumbersome in CLI, so I think the best way to do this is to create a separate Excel spreadsheet.
@@ -10,7 +15,8 @@
   - Read from Sheet1 > calculate positions > output five different schedules into Sheet2
   - This may need an overhaul of some functions as the desired workflow of the users isn't a CLI-based one.
 
-- Automatically save the end results to an Excel spreadsheet.
+- Automatically save the end results to an Excel spreadsheet. (IN PROGRESS)
+  - This will be solved automatically once the fixed timeslot feature is implemented.
 
 - Show total hours worked and total free time lost. (DONE)
 
