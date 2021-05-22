@@ -8,7 +8,7 @@ calendar = [
     ["ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ", "ㅡㅡㅡ"]
 ]
 
-wb = openpyxl.load_workbook("geunmyeong.xlsx")
+wb = openpyxl.load_workbook("schedule.xlsx")
 sheet1 = wb.get_sheet_by_name("Sheet1")
 empytyCellCount = 28
 
@@ -130,15 +130,11 @@ class Person:
 
 
 def fillBlank(personList):
-    # print("checking shifts...")
-    # if a person's logicalCalendar value == 0 and calendar value == ㅡㅡㅡ
-    # then assign that person there
     random.shuffle(personList)
     for i in range(0, 4):
         for j in range(0, 7):
             if calendar[i][j] == "ㅡㅡㅡ":
                 for person in personList:
-                    # print("checking case for " + person.name + " at "+ str(i) + ", " + str(j))
                     if person.logicalCalendar[i][j] == 0:
                         if i == 0 and person.numMorning < 2:
                             calendar[i][j] = person.name
@@ -156,10 +152,8 @@ def fillBlank(personList):
                             calendar[i][j] = person.name
                             person.numNight += 1
                             break
-                        # print(person.name+" already has too many shifts for that timeslot")
                         continue
                     else:
-                        # print("logCal of "+person.name+" has no space")
                         continue
 
 
