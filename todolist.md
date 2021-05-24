@@ -50,3 +50,9 @@
   are full.
   - This will be solved if I set a timer for one second and see if the run yields a result.
   - If the run doesn't generate a result by one second, then the program will re-run.
+
+- Assigning each person n times vs. assigning everyone once n times
+  - Assign each person x times, because this way we can implement a counter that counts the number  
+  of shifts a person takes, and assign different amount of times for each person.
+  - This is especially important because the program is now pre-loading the calendar from the Excel  
+  sheet.
