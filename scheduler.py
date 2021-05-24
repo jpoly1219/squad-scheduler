@@ -48,7 +48,7 @@ class Person:
         self.numNight = numNight
 
 
-    def logCalInit(self):
+    def logCalInit(self, calendar):
         # check for last week and others' shifts
         if self.name == sundayNight:
             self.logicalCalendar[0][0] = 1
@@ -57,6 +57,15 @@ class Person:
             self.logicalCalendar[3][0] = 1
         for i in range(0, 4):
             for j in range(0, 7):
+                if calendar[i][j] == self.name:
+                    if i == 0:
+                        self.numMorning += 1
+                    if i == 1:
+                        self.numAfternoon += 1
+                    if i == 2:
+                        self.numEvening += 1
+                    if i == 3:
+                        self.numNight += 1
                 if calendar[i][j] != "ㅡㅡㅡ":
                     self.logicalCalendar[i][j] = 1
     
@@ -188,9 +197,16 @@ def generateSchedule(row):
             ],
             0, 0, 0, 0, 0, 0
         )
-
+    """
     for i in range(0, math.floor(empytyCellCount / len(personNameList))):
         for person in personDict.values():
+            person.logCalInit()
+            person.assign()
+    """
+
+    for person in personDict.values():
+        numShifts = person.numMorning + person.numAfternoon + person.numEvening + person.numNight
+        for i in range(0, math.floor(emptyCellCount / len(personNameList)) - numShifts):
             person.logCalInit()
             person.assign()
 
