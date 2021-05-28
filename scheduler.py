@@ -2,7 +2,7 @@ import math, openpyxl, random
 
 
 wb = openpyxl.load_workbook("schedule.xlsx")
-sheet1 = wb.get_sheet_by_name("Sheet1")
+sheet1 = wb["Sheet1"]
 
 sundayNight = sheet1["I3"].value
 
@@ -22,7 +22,7 @@ def loadCalendar():
                 empytyCellCount -= 1
                 calendar[i][j] == sheet1.cell(row=i+1, column=j+1).value
     
-    return calendar
+    return calendar, empytyCellCount
 
 
 def addPerson(pathToFile):
@@ -33,7 +33,7 @@ def addPerson(pathToFile):
     
 
 personNameList = addPerson("./people.txt")
-print(personNameList)
+# print(personNameList)
 
 
 class Person:
@@ -49,7 +49,6 @@ class Person:
 
 
     def logCalInit(self, calendar):
-        # check for last week and others' shifts
         if self.name == sundayNight:
             self.logicalCalendar[0][0] = 1
             self.logicalCalendar[1][0] = 1
@@ -77,9 +76,9 @@ class Person:
         boolPass = True
         loopCount = 0
         while boolPass == True:
-            if loopCount > 10:
-                print("no suitable timeslot")
-                calendar[timeslot][day] = "XXX"
+            if loopCount > 100000:
+                # print("no suitable timeslot")
+                calendar[timeslot][day] = "XXXXXX"
                 break
             if  (self.logicalCalendar[timeslot][day]==1) or \
                 (timeslot==0 and self.numMorning==2) or \
@@ -92,48 +91,47 @@ class Person:
                 boolPass = False
             loopCount += 1
         
-        if loopCount <= 10:
-            # morning shift
-            if timeslot == 0:
-                self.numMorning += 1
-                if day > 0:
-                    self.logicalCalendar[3][day-1] = 1 # last night
-                self.logicalCalendar[timeslot][day] = 1 # the shift
-                calendar[timeslot][day] = self.name
-                self.logicalCalendar[timeslot+1][day] = 1 # afternoon
-                self.logicalCalendar[timeslot+2][day] = 1 # evening
-            # afternoon shift
-            elif timeslot == 1:
-                self.numAfternoon += 1
-                if day > 0:
-                    self.logicalCalendar[3][day-1] = 1 # last night
-                self.logicalCalendar[timeslot][day] = 1 # the shift
-                calendar[timeslot][day] = self.name
-                self.logicalCalendar[timeslot-1][day] = 1 # morning
-                self.logicalCalendar[timeslot+1][day] = 1 # evening
-            # evening shift
-            elif timeslot == 2:
-                self.numEvening += 1
-                if day > 0:
-                    self.logicalCalendar[3][day-1] = 1 # last night
-                self.logicalCalendar[timeslot][day] = 1 # the shift
-                calendar[timeslot][day] = self.name
-                self.logicalCalendar[timeslot-2][day] = 1 # morning
-                self.logicalCalendar[timeslot-1][day] = 1 # afternoon
-                self.logicalCalendar[timeslot+1][day] = 1 # night
-            # night shift
-            else:
-                self.numNight += 1
-                if day > 0:
-                    self.logicalCalendar[3][day-1] = 1 # last night
-                if day != 6:
-                    self.logicalCalendar[0][day+1] = 1 # next morning
-                    self.logicalCalendar[1][day+1] = 1 # next afternoon
-                    self.logicalCalendar[2][day+1] = 1 # next evening
-                    self.logicalCalendar[3][day+1] = 1 # next night
-                self.logicalCalendar[timeslot][day] = 1 # the shift
-                calendar[timeslot][day] = self.name
-                self.logicalCalendar[timeslot-1][day] = 1 # evening shift
+        # morning shift
+        if timeslot == 0:
+            self.numMorning += 1
+            if day > 0:
+                self.logicalCalendar[3][day-1] = 1 # last night
+            self.logicalCalendar[timeslot][day] = 1 # the shift
+            calendar[timeslot][day] = self.name
+            self.logicalCalendar[timeslot+1][day] = 1 # afternoon
+            self.logicalCalendar[timeslot+2][day] = 1 # evening
+        # afternoon shift
+        elif timeslot == 1:
+            self.numAfternoon += 1
+            if day > 0:
+                self.logicalCalendar[3][day-1] = 1 # last night
+            self.logicalCalendar[timeslot][day] = 1 # the shift
+            calendar[timeslot][day] = self.name
+            self.logicalCalendar[timeslot-1][day] = 1 # morning
+            self.logicalCalendar[timeslot+1][day] = 1 # evening
+        # evening shift
+        elif timeslot == 2:
+            self.numEvening += 1
+            if day > 0:
+                self.logicalCalendar[3][day-1] = 1 # last night
+            self.logicalCalendar[timeslot][day] = 1 # the shift
+            calendar[timeslot][day] = self.name
+            self.logicalCalendar[timeslot-2][day] = 1 # morning
+            self.logicalCalendar[timeslot-1][day] = 1 # afternoon
+            self.logicalCalendar[timeslot+1][day] = 1 # night
+        # night shift
+        else:
+            self.numNight += 1
+            if day > 0:
+                self.logicalCalendar[3][day-1] = 1 # last night
+            if day != 6:
+                self.logicalCalendar[0][day+1] = 1 # next morning
+                self.logicalCalendar[1][day+1] = 1 # next afternoon
+                self.logicalCalendar[2][day+1] = 1 # next evening
+                self.logicalCalendar[3][day+1] = 1 # next night
+            self.logicalCalendar[timeslot][day] = 1 # the shift
+            calendar[timeslot][day] = self.name
+            self.logicalCalendar[timeslot-1][day] = 1 # evening shift
     
 
     def calcTime(self):
@@ -143,13 +141,12 @@ class Person:
         nightTime = 9 * self.numNight
         self.hoursWorked = morningTime + afternoonTime + eveningTime + nightTime
         
+        self.lostTime = eveningTime
         for i in range(5, 7):
             if calendar[0][i] == self.name:
                 self.lostTime += 4
             if calendar[1][i] == self.name:
                 self.lostTime += 6
-            if calendar[2][i] == self.name:
-                self.lostTime += 5
 
 
 def fillBlank(personList):
@@ -159,6 +156,9 @@ def fillBlank(personList):
             if calendar[i][j] == "ㅡㅡㅡ":
                 for person in personList:
                     if person.logicalCalendar[i][j] == 0:
+                        calendar[i][j] = person.name
+                        break
+                        """
                         if i == 0 and person.numMorning < 2:
                             calendar[i][j] = person.name
                             person.numMorning += 1
@@ -178,11 +178,11 @@ def fillBlank(personList):
                         continue
                     else:
                         continue
+                        """
 
 
-# repeat the process until five candidates are generated
 def generateSchedule(row):
-    calendar = loadCalendar()
+    calendar, emptyCellCount = loadCalendar()
 
     personDict = {}
 
@@ -207,23 +207,35 @@ def generateSchedule(row):
     for person in personDict.values():
         numShifts = person.numMorning + person.numAfternoon + person.numEvening + person.numNight
         for i in range(0, math.floor(emptyCellCount / len(personNameList)) - numShifts):
-            person.logCalInit()
-            person.assign()
+            person.logCalInit(calendar)
+            person.assign(calendar)
 
-    fillBlank(list(personDict.values()))
+    fillBlank(list(personDict.values()), calendar)
 
     # write final results into the Excel sheet
+    # this section needs a fix, writing to an Excel sheet is not working.
     for i in range(0, 4):
         for j in range(0, 7):
             sheet1.cell(row=(row+2)*5 + i, column=j+1) == calendar[i][j]
 
-
-for i in range(0, 5):
-    generateSchedule(i)
-
-print("final:")
 for i in range(0, 4):
     print(calendar[i])
 for person in personDict.values():
-    person.calcTime()
+    person.calcTime(calendar)
     print(person.name + ": hours worked = " + str(person.hoursWorked) + ", lost free time = " + str(person.lostTime))
+
+print("***************************************")
+print("*                                     *")
+print("*     scheduler.py by Jacob Kim       *")
+print("*                                     *")
+print("***************************************")
+print("")
+print("---------------------------------------------------------------------")
+
+for i in range(0, 5):
+    print("")
+    print("Option " + str(i+1) + ":")
+    print("")
+    generateSchedule(i)
+    print("")
+    print("---------------------------------------------------------------------")
