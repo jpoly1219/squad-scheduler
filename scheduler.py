@@ -197,12 +197,6 @@ def generateSchedule(row):
             ],
             0, 0, 0, 0, 0, 0
         )
-    """
-    for i in range(0, math.floor(empytyCellCount / len(personNameList))):
-        for person in personDict.values():
-            person.logCalInit()
-            person.assign()
-    """
 
     for person in personDict.values():
         numShifts = person.numMorning + person.numAfternoon + person.numEvening + person.numNight
@@ -216,7 +210,7 @@ def generateSchedule(row):
     # this section needs a fix, writing to an Excel sheet is not working.
     for i in range(0, 4):
         for j in range(0, 7):
-            sheet1.cell(row=(row+2)*5 + i, column=j+1) == calendar[i][j]
+            sheet1.cell(row=(row+2)*5 + i, column=j+1).value = calendar[i][j]
 
 for i in range(0, 4):
     print(calendar[i])
